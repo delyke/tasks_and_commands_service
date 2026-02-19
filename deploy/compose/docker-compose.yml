@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: tasks_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-tasks_db}
+      MYSQL_USER: ${MYSQL_USER:-tasks_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-tasks_password}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ../mysql/conf.d:/etc/mysql/conf.d:ro
+      - ../mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-rootpassword}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - tasks_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: tasks_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis_password}
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis_password}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tasks_network
+
+  migrate:
+    image: migrate/migrate:v4.17.0
+    container_name: tasks_migrate
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ../../migrations:/migrations:ro
+    command: [
+      "-path", "/migrations",
+      "-database", "mysql://${MYSQL_USER:-tasks_user}:${MYSQL_PASSWORD:-tasks_password}@tcp(mysql:3306)/${MYSQL_DATABASE:-tasks_db}",
+      "up"
+    ]
+    networks:
+      - tasks_network
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  tasks_network:
+    driver: bridge

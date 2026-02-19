@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/go-faster/errors"
-
 	"github.com/ogen-go/ogen/ogenerrors"
 )
 
@@ -35,13 +34,13 @@ func findAuthorization(h http.Header, prefix string) (string, bool) {
 }
 
 var operationRolesBearerAuth = map[string][]string{
-	CreateTaskOperation:       []string{},
-	CreateTeamOperation:       []string{},
-	GetTaskHistoryOperation:   []string{},
-	InviteUserToTeamOperation: []string{},
-	ListTasksOperation:        []string{},
-	ListTeamsOperation:        []string{},
-	UpdateTaskOperation:       []string{},
+	CreateTaskOperation:       {},
+	CreateTeamOperation:       {},
+	GetTaskHistoryOperation:   {},
+	InviteUserToTeamOperation: {},
+	ListTasksOperation:        {},
+	ListTeamsOperation:        {},
+	UpdateTaskOperation:       {},
 }
 
 func (s *Server) securityBearerAuth(ctx context.Context, operationName OperationName, req *http.Request) (context.Context, bool, error) {
