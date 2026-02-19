@@ -1,0 +1,19 @@
+type: object
+description: Пользователь системы
+properties:
+  id:
+    type: integer
+    format: int64
+  username:
+    type: string
+  email:
+    type: string
+    format: email
+  created_at:
+    type: string
+    format: date-time
+required:
+  - id
+  - username
+  - email
+  - created_at

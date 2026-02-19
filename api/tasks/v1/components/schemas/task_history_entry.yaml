@@ -1,0 +1,35 @@
+type: object
+description: Запись об изменении задачи (аудит)
+properties:
+  id:
+    type: integer
+    format: int64
+  task_id:
+    type: integer
+    format: int64
+  changed_by:
+    type: integer
+    format: int64
+  field_name:
+    type: string
+    description: Название изменённого поля
+  old_value:
+    type: string
+    nullable: true
+    description: Предыдущее значение поля
+  new_value:
+    type: string
+    nullable: true
+    description: Новое значение поля
+  changed_at:
+    type: string
+    format: date-time
+  changer:
+    $ref: ./user.yaml
+required:
+  - id
+  - task_id
+  - changed_by
+  - field_name
+  - changed_at
+  - changer

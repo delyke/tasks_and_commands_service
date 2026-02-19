@@ -1,0 +1,13 @@
+type: object
+description: Доступ запрещён
+properties:
+  code:
+    type: integer
+    format: int32
+    example: 403
+  message:
+    type: string
+    example: "Forbidden"
+required:
+  - code
+  - message

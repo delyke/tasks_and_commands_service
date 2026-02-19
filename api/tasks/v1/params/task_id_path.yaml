@@ -1,0 +1,7 @@
+name: id
+in: path
+required: true
+description: Идентификатор задачи
+schema:
+  type: integer
+  format: int64

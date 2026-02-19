@@ -1,0 +1,159 @@
+get:
+  tags:
+    - Tasks
+  summary: Список задач с фильтрацией и пагинацией
+  operationId: ListTasks
+  parameters:
+    - name: team_id
+      in: query
+      description: Фильтр по команде
+      schema:
+        type: integer
+        format: int64
+    - name: status
+      in: query
+      description: Фильтр по статусу задачи
+      schema:
+        type: string
+        enum:
+          - todo
+          - in_progress
+          - done
+    - name: assignee_id
+      in: query
+      description: Фильтр по исполнителю
+      schema:
+        type: integer
+        format: int64
+    - $ref: ../../params/page.yaml
+    - $ref: ../../params/per_page.yaml
+  responses:
+    '200':
+      description: Список задач
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tasks:
+                type: array
+                items:
+                  $ref: ../../components/schemas/task.yaml
+              pagination:
+                $ref: ../../components/schemas/pagination.yaml
+            required:
+              - tasks
+              - pagination
+    '400':
+      description: Ошибка валидации параметров запроса
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/bad_request_error.yaml
+    '401':
+      description: Не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/unauthorized_error.yaml
+    '500':
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/internal_server_error.yaml
+    default:
+      description: Непредвиденная ошибка
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/generic_error.yaml
+
+post:
+  tags:
+    - Tasks
+  summary: Создать новую задачу (только для членов команды)
+  operationId: CreateTask
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            title:
+              type: string
+              minLength: 1
+              maxLength: 255
+            description:
+              type: string
+              maxLength: 5000
+            status:
+              type: string
+              enum:
+                - todo
+                - in_progress
+                - done
+              default: todo
+            priority:
+              type: string
+              enum:
+                - low
+                - medium
+                - high
+              default: medium
+            team_id:
+              type: integer
+              format: int64
+            assignee_id:
+              type: integer
+              format: int64
+            due_date:
+              type: string
+              format: date-time
+          required:
+            - title
+            - team_id
+  responses:
+    '201':
+      description: Задача успешно создана
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/task.yaml
+    '400':
+      description: Ошибка валидации данных
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/bad_request_error.yaml
+    '401':
+      description: Не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/unauthorized_error.yaml
+    '403':
+      description: Нет прав — пользователь не является членом команды
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/forbidden_error.yaml
+    '404':
+      description: Команда не найдена
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/not_found_error.yaml
+    '500':
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/internal_server_error.yaml
+    default:
+      description: Непредвиденная ошибка
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/generic_error.yaml

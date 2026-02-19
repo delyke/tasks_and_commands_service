@@ -1,0 +1,26 @@
+type: object
+description: Участник команды с ролью
+properties:
+  user_id:
+    type: integer
+    format: int64
+  team_id:
+    type: integer
+    format: int64
+  role:
+    type: string
+    enum:
+      - owner
+      - admin
+      - member
+  joined_at:
+    type: string
+    format: date-time
+  user:
+    $ref: ./user.yaml
+required:
+  - user_id
+  - team_id
+  - role
+  - joined_at
+  - user

@@ -1,0 +1,13 @@
+type: object
+description: Внутренняя ошибка сервера
+properties:
+  code:
+    type: integer
+    format: int32
+    example: 500
+  message:
+    type: string
+    example: "Internal server error"
+required:
+  - code
+  - message

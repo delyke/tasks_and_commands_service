@@ -1,0 +1,13 @@
+type: object
+description: Ошибка аутентификации
+properties:
+  code:
+    type: integer
+    format: int32
+    example: 401
+  message:
+    type: string
+    example: "Unauthorized"
+required:
+  - code
+  - message

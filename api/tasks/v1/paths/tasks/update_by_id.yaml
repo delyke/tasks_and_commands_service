@@ -1,0 +1,85 @@
+parameters:
+  - $ref: ../../params/task_id_path.yaml
+
+put:
+  tags:
+    - Tasks
+  summary: Обновить задачу (проверка прав доступа)
+  operationId: UpdateTask
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            title:
+              type: string
+              minLength: 1
+              maxLength: 255
+            description:
+              type: string
+              maxLength: 5000
+            status:
+              type: string
+              enum:
+                - todo
+                - in_progress
+                - done
+            priority:
+              type: string
+              enum:
+                - low
+                - medium
+                - high
+            assignee_id:
+              type: integer
+              format: int64
+              nullable: true
+            due_date:
+              type: string
+              format: date-time
+              nullable: true
+  responses:
+    '200':
+      description: Задача успешно обновлена
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/task.yaml
+    '400':
+      description: Ошибка валидации данных
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/bad_request_error.yaml
+    '401':
+      description: Не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/unauthorized_error.yaml
+    '403':
+      description: Нет прав на изменение задачи
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/forbidden_error.yaml
+    '404':
+      description: Задача не найдена
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/not_found_error.yaml
+    '500':
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/internal_server_error.yaml
+    default:
+      description: Непредвиденная ошибка
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/generic_error.yaml

@@ -1,0 +1,8 @@
+name: page
+in: query
+description: Номер страницы
+schema:
+  type: integer
+  format: int32
+  minimum: 1
+  default: 1

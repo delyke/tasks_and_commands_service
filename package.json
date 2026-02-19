@@ -1,0 +1,9 @@
+{
+  "name": "tasks-and-commands-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OpenAPI tooling for TasksService",
+  "devDependencies": {
+    "@redocly/cli": "^1.34.0"
+  }
+}

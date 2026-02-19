@@ -1,0 +1,62 @@
+post:
+  tags:
+    - Auth
+  summary: Аутентификация пользователя и получение JWT-токена
+  operationId: LoginUser
+  security: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              format: email
+            password:
+              type: string
+              format: password
+          required:
+            - email
+            - password
+  responses:
+    '200':
+      description: Успешная аутентификация
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                description: JWT-токен для авторизации
+              user:
+                $ref: ../../components/schemas/user.yaml
+            required:
+              - token
+              - user
+    '400':
+      description: Ошибка валидации данных
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/bad_request_error.yaml
+    '401':
+      description: Неверные учётные данные
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/unauthorized_error.yaml
+    '500':
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/internal_server_error.yaml
+    default:
+      description: Непредвиденная ошибка
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/generic_error.yaml

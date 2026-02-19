@@ -1,0 +1,13 @@
+type: object
+description: Конфликт — ресурс уже существует
+properties:
+  code:
+    type: integer
+    format: int32
+    example: 409
+  message:
+    type: string
+    example: "Resource already exists"
+required:
+  - code
+  - message

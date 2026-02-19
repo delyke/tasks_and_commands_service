@@ -1,0 +1,96 @@
+get:
+  tags:
+    - Teams
+  summary: Список команд, в которых состоит текущий пользователь
+  operationId: ListTeams
+  parameters:
+    - $ref: ../../params/page.yaml
+    - $ref: ../../params/per_page.yaml
+  responses:
+    '200':
+      description: Список команд
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              teams:
+                type: array
+                items:
+                  $ref: ../../components/schemas/team.yaml
+              pagination:
+                $ref: ../../components/schemas/pagination.yaml
+            required:
+              - teams
+              - pagination
+    '401':
+      description: Не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/unauthorized_error.yaml
+    '500':
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/internal_server_error.yaml
+    default:
+      description: Непредвиденная ошибка
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/generic_error.yaml
+
+post:
+  tags:
+    - Teams
+  summary: Создать новую команду (текущий пользователь становится owner)
+  operationId: CreateTeam
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              maxLength: 100
+            description:
+              type: string
+              maxLength: 500
+          required:
+            - name
+  responses:
+    '201':
+      description: Команда успешно создана
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/team.yaml
+    '400':
+      description: Ошибка валидации данных
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/bad_request_error.yaml
+    '401':
+      description: Не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/unauthorized_error.yaml
+    '500':
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/internal_server_error.yaml
+    default:
+      description: Непредвиденная ошибка
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/generic_error.yaml

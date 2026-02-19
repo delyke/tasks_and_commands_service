@@ -1,0 +1,48 @@
+openapi: 3.0.3
+info:
+  title: TasksService API
+  version: 1.0.0
+  description: REST API сервис для управления задачами в командах с поддержкой ролевой модели, истории изменений и пагинации
+x-ogen:
+  target: ./pkg/openapi/tasks/v1
+  package: tasks_v1
+  clean: true
+
+servers:
+  - url: http://localhost:8080
+    description: Локальный сервер разработки
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: Auth
+    description: Операции регистрации и аутентификации
+  - name: Teams
+    description: Управление командами
+  - name: Tasks
+    description: Управление задачами
+
+paths:
+  /api/v1/register:
+    $ref: ./paths/auth/register.yaml
+  /api/v1/login:
+    $ref: ./paths/auth/login.yaml
+  /api/v1/teams:
+    $ref: ./paths/teams/crud.yaml
+  /api/v1/teams/{id}/invite:
+    $ref: ./paths/teams/invite.yaml
+  /api/v1/tasks:
+    $ref: ./paths/tasks/crud.yaml
+  /api/v1/tasks/{id}:
+    $ref: ./paths/tasks/update_by_id.yaml
+  /api/v1/tasks/{id}/history:
+    $ref: ./paths/tasks/task_history_by_id.yaml
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT-токен, полученный при регистрации или входе

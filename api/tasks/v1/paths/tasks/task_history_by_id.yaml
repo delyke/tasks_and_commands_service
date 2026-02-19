@@ -1,0 +1,58 @@
+parameters:
+  - $ref: ../../params/task_id_path.yaml
+
+get:
+  tags:
+    - Tasks
+  summary: История изменений задачи
+  operationId: GetTaskHistory
+  parameters:
+    - $ref: ../../params/page.yaml
+    - $ref: ../../params/per_page.yaml
+  responses:
+    '200':
+      description: История изменений задачи
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              history:
+                type: array
+                items:
+                  $ref: ../../components/schemas/task_history_entry.yaml
+              pagination:
+                $ref: ../../components/schemas/pagination.yaml
+            required:
+              - history
+              - pagination
+    '401':
+      description: Не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/unauthorized_error.yaml
+    '403':
+      description: Нет прав на просмотр задачи
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/forbidden_error.yaml
+    '404':
+      description: Задача не найдена
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/not_found_error.yaml
+    '500':
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/internal_server_error.yaml
+    default:
+      description: Непредвиденная ошибка
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/generic_error.yaml

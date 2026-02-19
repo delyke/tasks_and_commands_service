@@ -1,0 +1,77 @@
+parameters:
+  - $ref: ../../params/team_id_path.yaml
+
+post:
+  tags:
+    - Teams
+  summary: Пригласить пользователя в команду (только owner/admin)
+  operationId: InviteUserToTeam
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            user_id:
+              type: integer
+              format: int64
+              description: Идентификатор приглашаемого пользователя
+            role:
+              type: string
+              enum:
+                - admin
+                - member
+              default: member
+              description: Роль пользователя в команде
+          required:
+            - user_id
+  responses:
+    '200':
+      description: Пользователь успешно добавлен в команду
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/team_member.yaml
+    '400':
+      description: Ошибка валидации данных
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/bad_request_error.yaml
+    '401':
+      description: Не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/unauthorized_error.yaml
+    '403':
+      description: Нет прав — требуется роль owner или admin
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/forbidden_error.yaml
+    '404':
+      description: Команда или пользователь не найдены
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/not_found_error.yaml
+    '409':
+      description: Пользователь уже состоит в команде
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/conflict_error.yaml
+    '500':
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/internal_server_error.yaml
+    default:
+      description: Непредвиденная ошибка
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/errors/generic_error.yaml
