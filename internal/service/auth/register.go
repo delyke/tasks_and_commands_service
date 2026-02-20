@@ -3,9 +3,11 @@ package auth
 import (
 	"context"
 	"errors"
+
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/delyke/tasks_and_commands_service/internal/domain"
 	"github.com/delyke/tasks_and_commands_service/internal/domain/user"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // RegisterInput represents registration input data.

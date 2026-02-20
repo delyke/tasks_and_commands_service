@@ -2,9 +2,10 @@ package task
 
 import (
 	"context"
+	"time"
+
 	"github.com/delyke/tasks_and_commands_service/internal/domain/task"
 	"github.com/delyke/tasks_and_commands_service/internal/domain/user"
-	"time"
 )
 
 // UpdateTaskInput represents task update input.

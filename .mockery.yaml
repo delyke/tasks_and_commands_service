@@ -1,0 +1,27 @@
+with-expecter: true
+dir: "{{.InterfaceDir}}/mocks"
+filename: "mock_{{.InterfaceNameSnake}}.go"
+outpkg: "mocks"
+mockname: "{{.InterfaceName}}"
+resolve-type-alias: false
+issue-845-fix: true
+
+packages:
+  # Репозитории
+  github.com/delyke/tasks_and_commands_service/internal/domain/user:
+    config:
+      include-regex: ".*Repository"
+  github.com/delyke/tasks_and_commands_service/internal/domain/team:
+    config:
+      include-regex: ".*Repository"
+  github.com/delyke/tasks_and_commands_service/internal/domain/task:
+    config:
+      include-regex: ".*Repository"
+
+  # Сервисы и их зависимости
+  github.com/delyke/tasks_and_commands_service/internal/service/auth:
+    config:
+      include-regex: "(TokenGenerator|Config)"
+  github.com/delyke/tasks_and_commands_service/internal/service/task:
+    config:
+      include-regex: "Cache"

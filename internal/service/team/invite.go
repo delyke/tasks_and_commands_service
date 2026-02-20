@@ -3,6 +3,7 @@ package team
 import (
 	"context"
 	"errors"
+
 	"github.com/delyke/tasks_and_commands_service/internal/domain"
 	"github.com/delyke/tasks_and_commands_service/internal/domain/team"
 	"github.com/delyke/tasks_and_commands_service/internal/domain/user"

@@ -9,6 +9,9 @@ type Service struct {
 	analyticsRepo task.AnalyticsRepository
 }
 
+// Ensure Service implements AnalyticsService.
+var _ AnalyticsService = (*Service)(nil)
+
 // NewAnalyticsService creates a new AnalyticsService.
 func NewAnalyticsService(analyticsRepo task.AnalyticsRepository) *Service {
 	return &Service{

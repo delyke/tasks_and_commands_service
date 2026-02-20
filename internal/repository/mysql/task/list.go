@@ -2,8 +2,9 @@ package task
 
 import (
 	"context"
-	"github.com/delyke/tasks_and_commands_service/internal/domain/task"
 	"strings"
+
+	"github.com/delyke/tasks_and_commands_service/internal/domain/task"
 )
 
 // List lists tasks with filtering and pagination.

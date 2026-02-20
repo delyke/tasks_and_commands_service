@@ -4,7 +4,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"golang.org/x/sync/errgroup"
+
+	"github.com/delyke/tasks_and_commands_service/closer"
+	"github.com/delyke/tasks_and_commands_service/internal/config"
+	"github.com/delyke/tasks_and_commands_service/internal/handler"
 	"github.com/delyke/tasks_and_commands_service/internal/handler/middleware"
+	"github.com/delyke/tasks_and_commands_service/internal/infrastructure/mysql"
+	"github.com/delyke/tasks_and_commands_service/internal/infrastructure/redis"
 	analytics2 "github.com/delyke/tasks_and_commands_service/internal/repository/mysql/analytics"
 	task2 "github.com/delyke/tasks_and_commands_service/internal/repository/mysql/task"
 	"github.com/delyke/tasks_and_commands_service/internal/repository/mysql/task_comment"
@@ -17,15 +27,6 @@ import (
 	"github.com/delyke/tasks_and_commands_service/internal/service/jwt"
 	"github.com/delyke/tasks_and_commands_service/internal/service/task"
 	"github.com/delyke/tasks_and_commands_service/internal/service/team"
-	"net/http"
-
-	"golang.org/x/sync/errgroup"
-
-	"github.com/delyke/tasks_and_commands_service/closer"
-	"github.com/delyke/tasks_and_commands_service/internal/config"
-	"github.com/delyke/tasks_and_commands_service/internal/handler"
-	"github.com/delyke/tasks_and_commands_service/internal/infrastructure/mysql"
-	"github.com/delyke/tasks_and_commands_service/internal/infrastructure/redis"
 	"github.com/delyke/tasks_and_commands_service/logger"
 	api "github.com/delyke/tasks_and_commands_service/pkg/openapi/tasks/v1"
 )
@@ -183,9 +184,12 @@ func (a *App) initHTTPServer(_ context.Context) error {
 		return fmt.Errorf("failed to create ogen server: %w", err)
 	}
 
+	r := chi.NewRouter()
+	r.Mount("/", srv)
+
 	a.httpServer = &http.Server{
 		Addr:        config.AppConfig().HTTP.Address(),
-		Handler:     srv,
+		Handler:     r,
 		ReadTimeout: config.AppConfig().HTTP.ReadTimeout(),
 	}
 

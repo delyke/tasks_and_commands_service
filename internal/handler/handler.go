@@ -3,13 +3,13 @@ package handler
 import (
 	"context"
 	"errors"
-	"github.com/delyke/tasks_and_commands_service/internal/service/auth"
-	"github.com/delyke/tasks_and_commands_service/internal/service/task"
-	"github.com/delyke/tasks_and_commands_service/internal/service/team"
 	"net/http"
 
 	"github.com/delyke/tasks_and_commands_service/internal/domain"
 	"github.com/delyke/tasks_and_commands_service/internal/domain/user"
+	"github.com/delyke/tasks_and_commands_service/internal/service/auth"
+	"github.com/delyke/tasks_and_commands_service/internal/service/task"
+	"github.com/delyke/tasks_and_commands_service/internal/service/team"
 	api "github.com/delyke/tasks_and_commands_service/pkg/openapi/tasks/v1"
 )
 

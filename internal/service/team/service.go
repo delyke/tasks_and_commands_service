@@ -12,6 +12,9 @@ type Service struct {
 	userRepo   user.Repository
 }
 
+// Ensure Service implements TeamService.
+var _ TeamService = (*Service)(nil)
+
 // NewTeamService creates a new TeamService.
 func NewTeamService(teamRepo team.Repository, memberRepo team.MemberRepository, userRepo user.Repository) *Service {
 	return &Service{

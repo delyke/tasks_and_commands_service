@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+
 	"github.com/delyke/tasks_and_commands_service/internal/domain/user"
 	"github.com/delyke/tasks_and_commands_service/internal/handler/middleware"
 	api "github.com/delyke/tasks_and_commands_service/pkg/openapi/tasks/v1"

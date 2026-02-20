@@ -1,9 +1,11 @@
 package jwt
 
 import (
-	"github.com/delyke/tasks_and_commands_service/internal/domain/user"
-	"github.com/golang-jwt/jwt/v5"
 	"time"
+
+	"github.com/golang-jwt/jwt/v5"
+
+	"github.com/delyke/tasks_and_commands_service/internal/domain/user"
 )
 
 // Generate creates a new JWT token.

@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+
 	"github.com/delyke/tasks_and_commands_service/internal/domain"
 	"github.com/delyke/tasks_and_commands_service/internal/domain/user"
 )

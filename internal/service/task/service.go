@@ -17,13 +17,6 @@ const (
 	tasksCacheTTL       = 5 * time.Minute
 )
 
-// Cache interface for task caching.
-type Cache interface {
-	Set(ctx context.Context, key string, value any, ttl time.Duration) error
-	Get(ctx context.Context, key string, dest any) error
-	Delete(ctx context.Context, keys ...string) error
-}
-
 // Service handles task operations.
 type Service struct {
 	taskRepo    task.Repository
@@ -32,6 +25,9 @@ type Service struct {
 	memberRepo  team.MemberRepository
 	cache       Cache
 }
+
+// Ensure Service implements TaskService.
+var _ TaskService = (*Service)(nil)
 
 // NewTaskService creates a new TaskService.
 func NewTaskService(

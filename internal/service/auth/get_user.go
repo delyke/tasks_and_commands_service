@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+
 	"github.com/delyke/tasks_and_commands_service/internal/domain/user"
 )
 

@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"context"
-	"github.com/delyke/tasks_and_commands_service/internal/service/jwt"
 	"strings"
 
+	"github.com/delyke/tasks_and_commands_service/internal/service/jwt"
 	api "github.com/delyke/tasks_and_commands_service/pkg/openapi/tasks/v1"
 )
 
